@@ -1,0 +1,29 @@
+{
+  "name": "vss",
+  "version": "1.0.0",
+  "main": "app.js",
+  "description": "VSS",
+  "scripts": {
+    "server": "nodemon backend/server.js",
+    "client": "cd frontend && npm run dev",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "type": "module",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@chakra-ui/react": "^3.14.2",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "framer-motion": "^12.5.0",
+    "mongoose": "^8.12.1",
+    "mongoose-sequence": "^6.0.1",
+    "react-icons": "^5.5.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
