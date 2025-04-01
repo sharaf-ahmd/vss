@@ -1,12 +1,20 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react'
 import { useServiceStore } from '@/store/service';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const UpdateService = () => {
 
   const handleUpdate = async()=>{
-    await UpdateService(newService._id, newService);
-    navigate('/Operations')
+     try {
+          await UpdateService(newService._id, newService);
+          toast.success("Service updated successfully! 🎉"); 
+          navigate('/managebooking')
+        } catch (error) {
+          toast.error("Failed to update Service. Try again! ❌");
+          console.error("Failed to update booking", error);
+        }
   }
     
   const handleChange = (e) => {

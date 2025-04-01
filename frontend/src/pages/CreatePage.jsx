@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import { useServiceStore } from '../store/service';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
+
 
 const CreatePage = () => {
+
+  const navigate = useNavigate();
 
   const [newService, setNewService] = useState({
     name: '',
@@ -21,7 +27,13 @@ const CreatePage = () => {
 
   const addService = async () => {   
     const { success, message } = await createService(newService);
-    console.log(success, message);
+    if(success){
+        toast.success("Service created successfully! 🎉"); 
+        navigate('/Operations')
+    }else{
+      toast.error("Failed to update booking. Try again! ❌");
+            console.error("Failed to update booking", error);
+    }
 
     setNewService({ name: '', vendor: '', location: '', distance: '', type: '', rating: '', price: '' });
   };
