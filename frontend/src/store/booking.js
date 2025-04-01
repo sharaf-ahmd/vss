@@ -30,11 +30,29 @@ export const useBookingStore = create((set) => ({
         }
     },
 
-    fetchBooking: async() => {
-        const res = await fetch("/api/booking");
-        const data = await res.json();
-        set({bookings: data.data});
+    fetchBooking: async () => {
+        const userEmail = localStorage.getItem('userEmail'); 
+        if (!userEmail) return;
+    
+        try {
+            const res = await fetch(`/api/booking?email=${userEmail}`);
+    
+            if (!res.ok) {
+                throw new Error(`Error ${res.status}: ${res.statusText}`);
+            }
+    
+            const data = await res.json();
+    
+            if (!data.success) {
+                throw new Error(data.message);
+            }
+    
+            set({ bookings: data.data });
+        } catch (error) {
+            console.error("Error fetching user bookings:", error.message);
+        }
     },
+    
 
     deleteBooking: async (sid)=>{
         const res= await fetch(`/api/booking/${sid}`,{

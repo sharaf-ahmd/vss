@@ -1,10 +1,25 @@
 import React from 'react';
+import  { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import image1 from '../assets/bk.avif';
 import image2 from '../assets/mb.jpg';
 import image4 from '../assets/his.jpg';
 import logout from '../assets/lg.png';
 
 const UserDash = () => {
+
+  const navigate = useNavigate();
+  const [userEmail, setUserEmail] = useState(null);
+
+  useEffect(() => {
+    const storedUserEmail = localStorage.getItem('userEmail');
+    if (!storedUserEmail) {
+      navigate('/login'); // Redirect if not logged in
+    } else {
+      setUserEmail(storedUserEmail);
+    }
+  }, [navigate]);
+
   const Operations = [
     {
         title: 'Book Services',

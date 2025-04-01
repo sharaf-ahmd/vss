@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { Box} from "@chakra-ui/react"
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, Navigate } from 'react-router-dom'
 import CreatePage from './pages/CreatePage'
+import Signup from './components/signup'
+import Login from './components/Login'
 import AboutUs from './pages/AboutUs'
 import Navbar from './components/Navbar'
 import ViewServices from './pages/viewServices'
@@ -19,6 +21,8 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
 
+  const user = localStorage.getItem("token")
+
   return (
     <>
  
@@ -27,6 +31,8 @@ function App() {
       <ToastContainer position="top-right" autoClose={3000} />
       <Routes>
         <Route path="/viewservice" element={<ViewServices/>} />
+        <Route path="/" element={<Signup/>} />
+        <Route path="/login" element={<Login/>} />
         <Route path="/managebooking" element={<ManageBookings/>} />
         <Route path="/UpdateService" element={<UpdateService />} />
         <Route path="/userdash" element={<UserDash />} />

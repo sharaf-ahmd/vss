@@ -7,6 +7,7 @@ const bookingSchema = new mongoose.Schema({
     vendor:{type: String, required: true},
     price: { type: Number, required: true },
     customer: { type: String, required: true },
+    email:{type:String, required:true},
     contact:{type:Number, required: true},
     date: { type: Date, required: true },
     time: { type: String, required: true },

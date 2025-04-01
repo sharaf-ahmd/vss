@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const ManageBookings = () => {
 
+  const userEmail = localStorage.getItem('userEmail');
    const{ fetchBooking, bookings, deleteBooking }=useBookingStore();
   const navigate = useNavigate();
 
@@ -48,7 +49,7 @@ const ManageBookings = () => {
         </thead>
         <tbody>
           {bookings.map((booking) => (
-            <tr key={booking._id} style={styles.tr}>
+            <tr key={userEmail} style={styles.tr}>
               <td style={styles.td}>{booking.service}</td>
               <td style={styles.td}>{booking.vendor}</td>
               <td style={styles.td}>{formatDate(booking.date)}</td>

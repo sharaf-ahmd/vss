@@ -32,7 +32,8 @@ const Booking = () => {
     location:'',
     service: service?.name,     
     vendor: service?.vendor,    
-    price: service?.price
+    price: service?.price,
+    email: localStorage.getItem("userEmail") 
   });
 
   const handleChange = (e) => {
@@ -124,6 +125,18 @@ const Booking = () => {
             style={style.inputField}
           />
         </div>
+
+        <div style={style.inputGroup}>
+          <input
+            type="email"
+            name="email"
+            placeholder="E-mail"
+            value={bookingDetails.email}
+            onChange={handleChange}
+            style={style.inputField}
+            readOnly
+          />
+        </div>
         
 
 
@@ -181,6 +194,8 @@ const Booking = () => {
             style={style.inputField}
           />
         </div>
+
+       
 
 
        
