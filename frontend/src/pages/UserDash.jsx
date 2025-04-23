@@ -14,7 +14,7 @@ const UserDash = () => {
   useEffect(() => {
     const storedUserEmail = localStorage.getItem('userEmail');
     if (!storedUserEmail) {
-      navigate('/login'); // Redirect if not logged in
+      navigate('/login'); 
     } else {
       setUserEmail(storedUserEmail);
     }

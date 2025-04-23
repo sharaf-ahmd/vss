@@ -18,7 +18,6 @@ export const getBooking = async (req, res) => {
   }
 
 }
-
   
 export const  createbooking = async (req, res) => {
     const booking = req.body;

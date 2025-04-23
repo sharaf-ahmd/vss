@@ -1,5 +1,4 @@
-import { useColorModeValue } from '@/components/ui/color-mode'
-import { Box, Button, Container, Heading, Input, VStack } from '@chakra-ui/react'
+
 import { useLocation, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import { useBookingStore } from '@/store/booking';

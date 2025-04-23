@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 5000;
 const app = express();
 
 app.use(cors());
-app.use(express.json()); // allows to accept json data
+app.use(express.json()); 
 app.use("/api/services", ServiceRoute);
 app.use("/api/booking", BookingRoute);
 app.use("/api/users", userRoutes);
