@@ -6,23 +6,8 @@ import { useBookingStore } from '@/store/booking';
 const Booking = () => {
   const location = useLocation();
   const navigate = useNavigate();
-
-  // Getting the selected service details from the previous page
   const service = location.state?.service;
 
-  // State to store user booking details
-
-  const { createBooking } = useBookingStore();
-
-  const handleBooking = async () => {   
-
-    const { success, message } = await createBooking(bookingDetails);
-    console.log(success, message);
-    console.log('data sent',bookingDetails)
-    setBookingDetails({ customer: '', contact: '', location: '', date: '', time: ''});
-    navigate('/managebooking')
-  };
- 
   const [bookingDetails, setBookingDetails] = useState({
     customer: '',
     contact: '',
@@ -43,9 +28,9 @@ const Booking = () => {
     }));
   };
 
-
-
-
+  const handleBooking = () => {
+    navigate('/payment', { state: { bookingDetails } });
+  };
   const style = {
     container: {
       maxWidth: '480px',
@@ -88,19 +73,15 @@ const Booking = () => {
   };
 
 
-
   return (
     <div style={style.container}>
       <h1 style={style.heading}>Make Booking</h1>
       <div style={style.formContainer}>
         <div style={style.inputGroup}>
-
-        <div style={style.inputGroup}>
           <input
             type="text"
             value={service?.name || ''} 
-            isReadOnly
-            onChange={handleChange}
+            readOnly
             style={style.inputField}
           />
         </div>
@@ -109,8 +90,7 @@ const Booking = () => {
           <input
             type="text"
             value={service?.vendor || ''} 
-            isReadOnly
-            onChange={handleChange}
+            readOnly
             style={style.inputField}
           />
         </div>
@@ -119,8 +99,7 @@ const Booking = () => {
           <input
             type="text"
             value={`$${service?.price}`}
-             isReadOnly
-            onChange={handleChange}
+            readOnly
             style={style.inputField}
           />
         </div>
@@ -136,10 +115,8 @@ const Booking = () => {
             readOnly
           />
         </div>
-        
 
-
-
+        <div style={style.inputGroup}>
           <input
             type="text"
             name="customer"
@@ -194,17 +171,10 @@ const Booking = () => {
           />
         </div>
 
-       
-
-
-       
-
         <button style={style.button} onClick={handleBooking}>Book</button>
       </div>
     </div>
   );
 };
-
-
 
 export default Booking;

@@ -17,6 +17,7 @@ import ManageBookings from './pages/ManageBookings'
 import UpdateBooking from './pages/UpdateBooking'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Payment from './pages/Payment' 
 
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
         <Route path="/ContactUs" element={<ContactUs/>} />
         <Route path="/MechDash" element={<MechanicDash />} />
         <Route path="/updtbooking" element={<UpdateBooking />} />
+        <Route path="/payment" element={<Payment />} />
       </Routes>
      </Box>
     </>
