@@ -1,12 +1,12 @@
 import stripe from '../models/stripe.js';
 
-const YOUR_DOMAIN = 'http://localhost:5000';
+const YOUR_DOMAIN = 'http://localhost:5173';
 
 export const createCheckoutSession = async (req, res) => {
   try {
     const { service, price, email } = req.body.bookingDetails;
 
-    // Create a checkout session
+   
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: [
@@ -16,18 +16,18 @@ export const createCheckoutSession = async (req, res) => {
             product_data: {
               name: service,
             },
-            unit_amount: price * 100, // Price in cents
+            unit_amount: price * 100, 
           },
           quantity: 1,
         },
       ],
       mode: 'payment',
       success_url: `${YOUR_DOMAIN}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${YOUR_DOMAIN}/cancel`,
+      cancel_url: `${YOUR_DOMAIN}/checkout`,
       customer_email: email,
     });
 
-    // Send back the session ID to be used for redirecting to Stripe's checkout page
+
     res.send({ id: session.id });
   } catch (error) {
     console.error('Error creating checkout session:', error);

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { loadStripe } from '@stripe/stripe-js';
+import { useBookingStore } from '@/store/booking';
 
 const stripePromise = loadStripe('pk_test_51RGhSzFNC9lumuod1YciBcs8fWrnrUvUUznVMpl4FITPAzpTFLzcdBMEeXs9QMu0t63bQwEEnHsHFo6IlR1FT8uI00lTPccNmm');
 
@@ -8,6 +9,8 @@ const Booking = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const service = location.state?.service;
+
+    const { createBooking } = useBookingStore();
 
   const [bookingDetails, setBookingDetails] = useState({
     customer: '',
@@ -38,24 +41,28 @@ const Booking = () => {
         },
         body: JSON.stringify({ bookingDetails }),
       });
-
+  
       const data = await response.json();
       if (!data.id) {
         throw new Error("Failed to create checkout session");
       }
-
+      localStorage.setItem('bookingDetails', JSON.stringify(bookingDetails));
+  
       const stripe = await stripePromise;
       const { error } = await stripe.redirectToCheckout({ sessionId: data.id });
-
+  
       if (error) {
         console.error("Stripe checkout error:", error.message);
         alert("Error initiating payment: " + error.message);
       }
+  
     } catch (error) {
       console.error("Payment initiation failed:", error);
       alert("Something went wrong with your payment. Please try again.");
     }
   };
+  
+  
 
   const style = {
     container: {
@@ -167,7 +174,6 @@ const Booking = () => {
           <input
             type="date"
             name="date"
-            placeholder="Booking time"
             value={bookingDetails.date}
             onChange={handleChange}
             style={style.inputField}
@@ -178,7 +184,6 @@ const Booking = () => {
           <input
             type="time"
             name="time"
-            placeholder="Booking time"
             value={bookingDetails.time}
             onChange={handleChange}
             style={style.inputField}
