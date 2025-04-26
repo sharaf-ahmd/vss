@@ -16,6 +16,10 @@ import Booking from './pages/booking'
 import ManageBookings from './pages/ManageBookings'
 import UpdateBooking from './pages/UpdateBooking'
 import { ToastContainer } from 'react-toastify';
+import CheckoutForm from './pages/CheckoutForm';
+import Return from './pages/Return';
+import SuccessPage from './pages/Success';
+
 import 'react-toastify/dist/ReactToastify.css';
 import Payment from './pages/Payment' 
 
@@ -44,7 +48,10 @@ function App() {
         <Route path="/ContactUs" element={<ContactUs/>} />
         <Route path="/MechDash" element={<MechanicDash />} />
         <Route path="/updtbooking" element={<UpdateBooking />} />
+        <Route path="/checkout" element={<CheckoutForm />} />
+        <Route path="/return" element={<Return />} />
         <Route path="/payment" element={<Payment />} />
+        <Route path="/success" element={<SuccessPage />} />
       </Routes>
      </Box>
     </>

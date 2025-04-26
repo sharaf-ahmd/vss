@@ -1,7 +1,8 @@
-
-import { useLocation, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
-import { useBookingStore } from '@/store/booking';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { loadStripe } from '@stripe/stripe-js';
+
+const stripePromise = loadStripe('pk_test_51RGhSzFNC9lumuod1YciBcs8fWrnrUvUUznVMpl4FITPAzpTFLzcdBMEeXs9QMu0t63bQwEEnHsHFo6IlR1FT8uI00lTPccNmm');
 
 const Booking = () => {
   const location = useLocation();
@@ -13,7 +14,7 @@ const Booking = () => {
     contact: '',
     date: '',
     time: '', 
-    location:'',
+    location: '',
     service: service?.name,     
     vendor: service?.vendor,    
     price: service?.price,
@@ -28,9 +29,34 @@ const Booking = () => {
     }));
   };
 
-  const handleBooking = () => {
-    navigate('/payment', { state: { bookingDetails } });
+  const handlePayment = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/create-checkout-session", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ bookingDetails }),
+      });
+
+      const data = await response.json();
+      if (!data.id) {
+        throw new Error("Failed to create checkout session");
+      }
+
+      const stripe = await stripePromise;
+      const { error } = await stripe.redirectToCheckout({ sessionId: data.id });
+
+      if (error) {
+        console.error("Stripe checkout error:", error.message);
+        alert("Error initiating payment: " + error.message);
+      }
+    } catch (error) {
+      console.error("Payment initiation failed:", error);
+      alert("Something went wrong with your payment. Please try again.");
+    }
   };
+
   const style = {
     container: {
       maxWidth: '480px',
@@ -71,7 +97,6 @@ const Booking = () => {
       fontSize: '1rem',
     },
   };
-
 
   return (
     <div style={style.container}>
@@ -171,7 +196,7 @@ const Booking = () => {
           />
         </div>
 
-        <button style={style.button} onClick={handleBooking}>Book</button>
+        <button style={style.button} onClick={handlePayment}>Pay & Book</button>
       </div>
     </div>
   );

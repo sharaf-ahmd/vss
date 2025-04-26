@@ -4,7 +4,8 @@ import { db } from "./config/db.js";
 import ServiceRoute from "./routes/Service.route.js";
 import BookingRoute from "./routes/Booking.route.js";
 import { router as userRoutes } from "./routes/Users.js"; 
-import {router as authRoutes} from "./routes/auth.js";
+import { router as authRoutes } from "./routes/auth.js";
+import checkoutRoutes from "./routes/checkout.routes.js";
 import cors from "cors"; 
 
 dotenv.config();
@@ -18,6 +19,7 @@ app.use("/api/services", ServiceRoute);
 app.use("/api/booking", BookingRoute);
 app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api", checkoutRoutes); 
 
 app.listen(PORT, () => {
   db();
