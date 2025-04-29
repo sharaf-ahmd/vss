@@ -26,7 +26,6 @@ const ManageBookings = () => {
     const { success } = await deleteBooking(sid);
     if (success) {
         toast.success("Booking cancelled successfully! 🎉"); 
-        fetchBooking();
     } else {
       toast.error("Failed to cancel booking. Try again! ❌");
       console.error("Failed to update booking", error);
@@ -49,7 +48,7 @@ const ManageBookings = () => {
         </thead>
         <tbody>
           {bookings.map((booking) => (
-            <tr key={userEmail} style={styles.tr}>
+            <tr key={booking._id} style={styles.tr}>
               <td style={styles.td}>{booking.service}</td>
               <td style={styles.td}>{booking.vendor}</td>
               <td style={styles.td}>{formatDate(booking.date)}</td>

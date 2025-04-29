@@ -17,6 +17,7 @@ const Operations = () => {
     const { success } = await deleteService(sid);
     if (success) {
       toast.success("Service Removed successfully! 🎉");
+      
     } else {
        toast.error("Failed to remove booking. Try again! ❌");
             console.error("Failed to update booking", error);

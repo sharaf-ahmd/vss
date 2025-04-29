@@ -63,9 +63,10 @@ export const useBookingStore = create((set) => ({
         return {success: false, message:data.message}
     }
 
-        set(state => ({booking: state.booking.filter(service=> service._id !==sid)}))
+        set(state => ({bookings: state.bookings.filter(booking=> booking._id !==sid)}))
         return {success: true, message:'Deleted Successfully'}
     },
+    
 
      UpdateBooking: async (sid,Updatedbooking ) => {
          const res= await fetch(`/api/booking/${sid}`,{
@@ -80,7 +81,7 @@ export const useBookingStore = create((set) => ({
 
        
          set(state => ({
-             booking: state.bookings.map(booking => booking._id === sid ? data.data :booking)
+             bookings: state.bookings.map(booking => booking._id === sid ? data.data :booking)
          }))
 
 
