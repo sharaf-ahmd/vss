@@ -10,7 +10,7 @@ export const getBooking = async (req, res) => {
   }
 
   try {
-      const bookings = await Booking.find({ email: email }); // Find bookings by email
+      const bookings = await Booking.find({ email: email }); 
       res.status(200).json({ success: true, data: bookings });
   } catch (error) {
       console.error("Error fetching user bookings:", error);

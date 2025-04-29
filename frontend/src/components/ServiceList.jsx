@@ -6,7 +6,7 @@ const ServiceList = ({ services }) => {
   const navigate = useNavigate();
 
   const handleBookNow = (service) => {
-    // Navigate to /booking and pass the service details as state
+
     navigate('/booking', { state: { service } });
   };
 
@@ -36,7 +36,7 @@ const ServiceList = ({ services }) => {
                     
             <button
               className="book-button"
-              onClick={() => handleBookNow(service)} // Pass service to handleBookNow
+              onClick={() => handleBookNow(service)}
             >
               Book Now
             </button>

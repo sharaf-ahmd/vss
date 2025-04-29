@@ -1,4 +1,4 @@
-import Service from "../models/Services.model.js";
+import Service from "../models/services.model.js";
 import mongoose from "mongoose";
 
 

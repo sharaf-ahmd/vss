@@ -19,6 +19,8 @@ import { ToastContainer } from 'react-toastify';
 import CheckoutForm from './pages/CheckoutForm';
 import Return from './pages/Return';
 import SuccessPage from './pages/Success';
+import InquiriesPage from './pages/inquiry'
+import AdminInquiriesPage from './pages/admininquiry'
 
 import 'react-toastify/dist/ReactToastify.css';
 import Payment from './pages/Payment' 
@@ -52,6 +54,8 @@ function App() {
         <Route path="/return" element={<Return />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/success" element={<SuccessPage />} />
+        <Route path="/inquiries" element={<InquiriesPage />} />
+        <Route path="/admininquiries" element={<AdminInquiriesPage />} />
       </Routes>
      </Box>
     </>

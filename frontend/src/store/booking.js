@@ -78,7 +78,7 @@ export const useBookingStore = create((set) => ({
          const data =await res.json();
          if(!data.success) return {success: false, message: data.message};
 
-         //refresh dashboard after update operation
+       
          set(state => ({
              booking: state.bookings.map(booking => booking._id === sid ? data.data :booking)
          }))

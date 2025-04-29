@@ -1,7 +1,7 @@
 import React from 'react';
 import image1 from '../assets/1.png';
 import image2 from '../assets/1.avif';
-import image4 from '../assets/2.avif';
+import image4 from '../assets/his.jpg';
 import logout from '../assets/lg.png';
 
 const MechanicDash = () => {
@@ -21,12 +21,13 @@ const MechanicDash = () => {
       to: '/Operations',
     },
     {
-      title: 'View Bookings',
-      description: 'Easily manage your bookings by updating appointment details or canceling unnecessary ones.',
-      buttonText: 'View Now',
+      title: 'Manage inquires',
+      description: 'Manage your inquiries effortlessy, to improve customer satisfaction.',
+      buttonText: 'Add Now',
       image: image4,
-      to: '',
+      to: '/admininquiries',
     },
+ 
    
   ];
 
