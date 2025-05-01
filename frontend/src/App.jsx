@@ -21,6 +21,7 @@ import Return from './pages/Return';
 import SuccessPage from './pages/Success';
 import InquiriesPage from './pages/inquiry'
 import AdminInquiriesPage from './pages/admininquiry'
+import AllBookings from './pages/allbookings'
 
 import 'react-toastify/dist/ReactToastify.css';
 import Payment from './pages/Payment' 
@@ -56,6 +57,7 @@ function App() {
         <Route path="/success" element={<SuccessPage />} />
         <Route path="/inquiries" element={<InquiriesPage />} />
         <Route path="/admininquiries" element={<AdminInquiriesPage />} />
+        <Route path="/allbookings" element={<AllBookings />} />
       </Routes>
      </Box>
     </>

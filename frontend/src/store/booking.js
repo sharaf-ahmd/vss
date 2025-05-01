@@ -30,28 +30,7 @@ export const useBookingStore = create((set) => ({
         }
     },
 
-    fetchBooking: async () => {
-        const userEmail = localStorage.getItem('userEmail'); 
-        if (!userEmail) return;
     
-        try {
-            const res = await fetch(`/api/booking?email=${userEmail}`);
-    
-            if (!res.ok) {
-                throw new Error(`Error ${res.status}: ${res.statusText}`);
-            }
-    
-            const data = await res.json();
-    
-            if (!data.success) {
-                throw new Error(data.message);
-            }
-    
-            set({ bookings: data.data });
-        } catch (error) {
-            console.error("Error fetching user bookings:", error.message);
-        }
-    },
     
 
     deleteBooking: async (sid)=>{
@@ -67,6 +46,24 @@ export const useBookingStore = create((set) => ({
         return {success: true, message:'Deleted Successfully'}
     },
     
+    fetchBooking: async () => {
+        const email = localStorage.getItem('userEmail');
+      
+        try {
+          const endpoint = email ? `/api/booking?email=${email}` : `/api/booking`;
+          const res = await fetch(endpoint);
+          const data = await res.json();
+      
+          if (data.success) {
+            set({ bookings: data.data });
+          } else {
+            console.error(data.message);
+          }
+        } catch (error) {
+          console.error("Error fetching bookings", error);
+        }
+      },
+      
 
      UpdateBooking: async (sid,Updatedbooking ) => {
          const res= await fetch(`/api/booking/${sid}`,{
@@ -83,6 +80,7 @@ export const useBookingStore = create((set) => ({
          set(state => ({
              bookings: state.bookings.map(booking => booking._id === sid ? data.data :booking)
          }))
+         return { success: true, message: 'Booking updated successfully' }; 
 
 
      }

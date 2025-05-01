@@ -1,47 +1,40 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useBookingStore } from '@/store/booking';
 import { toast } from 'react-toastify';
+import { useBookingStore } from '@/store/booking';
 import 'react-toastify/dist/ReactToastify.css';
 
-
-const ManageBookings = () => {
-
-  const userEmail = localStorage.getItem('userEmail');
-   const{ fetchBooking, bookings, deleteBooking }=useBookingStore();
-  const navigate = useNavigate();
-
+const AllBookings = () => {
+     const{ fetchBooking, bookings, UpdateBooking }=useBookingStore();
 
   useEffect(() => {
-    fetchBooking();
+    fetchBooking(true); 
   }, [fetchBooking]);
-
-  const formatDate = (date) => {
-    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-    return new Date(date).toLocaleDateString(undefined, options);
-  };
   
+  const formatDate = (date) => {
+    return new Date(date).toISOString().split("T")[0];
+  };
 
-  const DeleteBooking = async (sid) => {
-    const { success } = await deleteBooking(sid);
+  const handleStatusUpdate = async (id, status) => {
+    const { success } = await UpdateBooking(id, { status });
     if (success) {
-        toast.success("Booking cancelled successfully! 🎉"); 
+      toast.success(`Booking ${status.toLowerCase()}ed successfully!`);
+      fetchBooking(); 
     } else {
-      toast.error("Failed to cancel booking. Try again! ❌");
-      console.error("Failed to update booking", error);
+      toast.error(`Failed to ${status.toLowerCase()} booking`);
     }
   };
 
   return (
     <div style={styles.container}>
+    
       <table style={styles.table}>
         <thead style={styles.thead}>
           <tr>
+            <th style={styles.th}>Email</th>
             <th style={styles.th}>Service</th>
             <th style={styles.th}>Shop</th>
             <th style={styles.th}>Date</th>
             <th style={styles.th}>Time</th>
-            <th style={styles.th}>Price</th>
             <th style={styles.th}>Location</th>
             <th style={styles.th}>Status</th>
             <th style={styles.th}>Actions</th>
@@ -50,25 +43,25 @@ const ManageBookings = () => {
         <tbody>
           {bookings.map((booking) => (
             <tr key={booking._id} style={styles.tr}>
+              <td style={styles.td}>{booking.email}</td>
               <td style={styles.td}>{booking.service}</td>
               <td style={styles.td}>{booking.vendor}</td>
               <td style={styles.td}>{formatDate(booking.date)}</td>
               <td style={styles.td}>{booking.time}</td>
               <td style={styles.td}>{booking.location}</td>
-              <td style={styles.td}>{booking.price}</td>
-              <td style={styles.td}>{booking.status}</td>
+              <td style={styles.td}>{booking.status || 'Pending'}</td>
               <td style={styles.td}>
                 <button
-                  style={{ ...styles.button, backgroundColor: '#c62a36' }}
-                  onClick={() => DeleteBooking(booking._id)}
+                  style={{ ...styles.button, backgroundColor: '#4caf50' }}
+                  onClick={() => handleStatusUpdate(booking._id, 'Confirmed')}
                 >
-                  Delete
+                  Confirm
                 </button>
                 <button
-                  style={{ ...styles.button, backgroundColor: '#023D54' }}
-                  onClick={() => navigate('/updtbooking', { state: { booking } })}
+                  style={{ ...styles.button, backgroundColor: '#f44336' }}
+                  onClick={() => handleStatusUpdate(booking._id, 'Declined')}
                 >
-                  Update
+                  Decline
                 </button>
               </td>
             </tr>
@@ -84,7 +77,7 @@ const styles = {
     padding: '10px',
   },
   table: {
-    marginTop:'30px',
+    marginTop: '30px',
     width: '100%',
     borderCollapse: 'collapse',
     borderRadius: '10px',
@@ -92,7 +85,7 @@ const styles = {
     border: '2px solid #196662',
   },
   thead: {
-    backgroundColor: '#c62a36',
+    backgroundColor: '#023D54',
     color: 'white',
   },
   th: {
@@ -110,7 +103,7 @@ const styles = {
   },
   button: {
     color: 'white',
-    padding: '8px 12px',
+    padding: '6px 10px',
     margin: '5px',
     border: 'none',
     borderRadius: '5px',
@@ -118,4 +111,4 @@ const styles = {
   },
 };
 
-export default ManageBookings;
+export default AllBookings;

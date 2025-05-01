@@ -2,22 +2,19 @@ import mongoose from "mongoose";
 import Booking from "../models/booking.models.js";
 
 export const getBooking = async (req, res) => {
-
   const { email } = req.query;
 
-  if (!email) {
-      return res.status(400).json({ success: false, message: "Email is required" });
-  }
-
   try {
-      const bookings = await Booking.find({ email: email }); 
-      res.status(200).json({ success: true, data: bookings });
-  } catch (error) {
-      console.error("Error fetching user bookings:", error);
-      res.status(500).json({ success: false, message: "Error fetching user bookings" });
-  }
+    const query = email ? { email } : {};
+    const bookings = await Booking.find(query);
 
-}
+    res.status(200).json({ success: true, data: bookings });
+  } catch (error) {
+    console.error("Error fetching bookings:", error);
+    res.status(500).json({ success: false, message: "Error fetching bookings" });
+  }
+};
+
   
 export const  createbooking = async (req, res) => {
     const booking = req.body;
