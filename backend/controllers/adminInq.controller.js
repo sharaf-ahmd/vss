@@ -38,7 +38,7 @@ export const updateAdminInquiry = async (req, res) => {
   try {
     const updatedInquiry = await Inquiry.findByIdAndUpdate(
       id,
-      { response, status }, 
+      { response, status,notification: true  }, 
       { new: true }
     );
 

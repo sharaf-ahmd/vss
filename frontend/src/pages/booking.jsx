@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { loadStripe } from '@stripe/stripe-js';
 import { useBookingStore } from '@/store/booking';
+import BackButton from '@/components/BackButton'
+
 
 const stripePromise = loadStripe('pk_test_51RGhSzFNC9lumuod1YciBcs8fWrnrUvUUznVMpl4FITPAzpTFLzcdBMEeXs9QMu0t63bQwEEnHsHFo6IlR1FT8uI00lTPccNmm');
 
@@ -107,6 +109,7 @@ const Booking = () => {
 
   return (
     <div style={style.container}>
+       <BackButton />
       <h1 style={style.heading}>Make Booking</h1>
       <div style={style.formContainer}>
         <div style={style.inputGroup}>

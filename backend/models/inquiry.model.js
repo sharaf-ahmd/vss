@@ -8,6 +8,7 @@ const inquirySchema = new mongoose.Schema({
     message: { type: String, required: true },
     status: { type: String, default: "pending" },
     response: { type: String }, 
+    notification: {type: Boolean,  default: false,}
 }, {
     timestamps: true,
 });

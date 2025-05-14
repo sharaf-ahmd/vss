@@ -4,6 +4,7 @@ import Sharaf from '../assets/sharaf.jpeg';
 import Rifky from '../assets/rifky.png';
 import ahamed from '../assets/ahamed.jpeg';
 import { color } from 'framer-motion';
+import BackButton from '@/components/BackButton'
 
 const styles = {
   container: {
@@ -78,6 +79,7 @@ const AboutUs = () => {
 
   return (
     <div style={styles.container}>
+       <BackButton />
       <div style={styles.section}>
         <h1 style={styles.heading}>About Us</h1>
         <p style={styles.text}>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Mail, Phone, MapPin } from 'lucide-react';
+import BackButton from '@/components/BackButton'
 
 const styles = {
   container: {
@@ -83,6 +84,7 @@ const ContactUs = () => {
 
   return (
     <div style={styles.container}>
+       <BackButton />
       <h1 style={styles.heading}>Contact Us</h1>
       <p style={styles.text}>
       Get in Touch with Us <br />
@@ -103,16 +105,7 @@ Your satisfaction is our priority—reach out today and let’s connect!
         ))}
       </div>
 
-      <div style={styles.formContainer}>
-        <form>
-          <input type="text" placeholder="First Name" style={styles.input} required />
-          <input type="text" placeholder="Last Name" style={styles.input} required />
-          <input type="email" placeholder="Email" style={styles.input} required />
-          <input type="text" placeholder="Subject" style={styles.input} required />
-          <textarea placeholder="Your message here..." style={styles.textarea} required></textarea>
-          <button type="submit" style={styles.button}>Send Message</button>
-        </form>
-      </div>
+     
     </div>
   );
 };

@@ -1,15 +1,20 @@
 import React, { useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useBookingStore } from '@/store/booking';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';  
+import BackButton from '@/components/BackButton';
 
 const AllBookings = () => {
-     const{ fetchBooking, bookings, UpdateBooking }=useBookingStore();
+  const { fetchBooking, bookings, UpdateBooking } = useBookingStore();
+  const navigate = useNavigate();  
 
   useEffect(() => {
-    fetchBooking(true); 
+    fetchBooking(true);
   }, [fetchBooking]);
-  
+
   const formatDate = (date) => {
     return new Date(date).toISOString().split("T")[0];
   };
@@ -18,15 +23,66 @@ const AllBookings = () => {
     const { success } = await UpdateBooking(id, { status });
     if (success) {
       toast.success(`Booking ${status.toLowerCase()}ed successfully!`);
-      fetchBooking(); 
+      fetchBooking();
     } else {
       toast.error(`Failed to ${status.toLowerCase()} booking`);
     }
   };
 
+  const exportPDF = () => {
+    const doc = new jsPDF();
+    doc.text("Bookings Report", 14, 15);
+
+    const tableColumn = ["Email", "Service", "Shop", "Date", "Time", "Location", "Status"];
+    const tableRows = bookings.map(b => [
+      b.email,
+      b.service,
+      b.vendor,
+      formatDate(b.date),
+      b.time,
+      b.location,
+      b.status || 'Pending',
+    ]);
+
+    autoTable(doc, {
+      startY: 20,
+      head: [tableColumn],
+      body: tableRows,
+    });
+
+    doc.save('bookings.pdf');
+  };
+
+  const exportCSV = () => {
+    const csvRows = [
+      ["Email", "Service", "Shop", "Date", "Time", "Location", "Status"],
+      ...bookings.map(b => [
+        b.email,
+        b.service,
+        b.vendor,
+        formatDate(b.date),
+        b.time,
+        b.location,
+        b.status || 'Pending'
+      ])
+    ];
+
+    const csvContent = csvRows.map(e => e.join(",")).join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "bookings.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div style={styles.container}>
     
+      <BackButton />
+
       <table style={styles.table}>
         <thead style={styles.thead}>
           <tr>
@@ -68,6 +124,11 @@ const AllBookings = () => {
           ))}
         </tbody>
       </table>
+
+      <div style={styles.buttonContainer}>
+        <button style={{ ...styles.button, backgroundColor: '#2196F3' }} onClick={exportPDF}>Export PDF</button>
+        <button style={{ ...styles.button, backgroundColor: '#FF9800' }} onClick={exportCSV}>Export CSV</button>
+      </div>
     </div>
   );
 };
@@ -76,6 +137,8 @@ const styles = {
   container: {
     padding: '10px',
   },
+ 
+
   table: {
     marginTop: '30px',
     width: '100%',
@@ -109,6 +172,12 @@ const styles = {
     borderRadius: '5px',
     cursor: 'pointer',
   },
+  buttonContainer: {
+    position: 'fixed',
+    bottom: '10px',
+    right: '10px',
+    zIndex: 1000, // Ensures buttons stay on top of other elements
+  }
 };
 
 export default AllBookings;

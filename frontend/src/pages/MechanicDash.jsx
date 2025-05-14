@@ -3,7 +3,7 @@ import image1 from '../assets/1.png';
 import image2 from '../assets/1.avif';
 import image4 from '../assets/his.jpg';
 import image3 from '../assets/sched.avif';
-import logout from '../assets/lg.png';
+
 
 const MechanicDash = () => {
   const Operations = [
@@ -24,7 +24,7 @@ const MechanicDash = () => {
     {
       title: 'Manage inquires',
       description: 'Manage your inquiries effortlessy, to improve customer satisfaction.',
-      buttonText: 'Add Now',
+      buttonText: 'View now',
       image: image4,
       to: '/admininquiries',
     },

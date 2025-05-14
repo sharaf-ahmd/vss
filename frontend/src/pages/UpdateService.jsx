@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { useServiceStore } from '@/store/service';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import BackButton from '@/components/BackButton'
 
 const UpdateService = () => {
 
@@ -72,6 +73,7 @@ const UpdateService = () => {
   
   return (
     <div style={style.container}>
+            <BackButton />
       <h1 style={style.heading}>Update Service</h1>
       <div style={style.formContainer}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>

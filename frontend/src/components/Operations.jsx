@@ -3,7 +3,7 @@ import { useServiceStore } from '@/store/service';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import BackButton from '@/components/BackButton'
 
 const Operations = () => {
   const { fetchServices, services, deleteService } = useServiceStore();
@@ -26,6 +26,7 @@ const Operations = () => {
 
   return (
     <div style={styles.container}>
+       <BackButton />
       <table style={styles.table}>
         <thead style={styles.thead}>
           <tr>

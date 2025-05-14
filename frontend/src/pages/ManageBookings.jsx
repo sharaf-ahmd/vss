@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useBookingStore } from '@/store/booking';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import BackButton from '@/components/BackButton'
+
 
 
 const ManageBookings = () => {
@@ -34,6 +36,7 @@ const ManageBookings = () => {
 
   return (
     <div style={styles.container}>
+       <BackButton />
       <table style={styles.table}>
         <thead style={styles.thead}>
           <tr>

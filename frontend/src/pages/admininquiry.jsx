@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useAdminInquiryStore } from '../store/admininq';
 import { toast } from 'react-toastify';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 import 'react-toastify/dist/ReactToastify.css';
+import BackButton from '@/components/BackButton'
+
 
 const AdminInquiriesPage = () => {
   const { inquiries, fetchAdminInquiries, updateAdminInquiry, deleteAdminInquiry } = useAdminInquiryStore();
@@ -31,7 +35,7 @@ const AdminInquiriesPage = () => {
       };
       const result = await updateAdminInquiry(selectedInquiry._id, updatedInquiry);
       if (result.success) {
-        toast.success('Respnose sent successfully');
+        toast.success('Response sent successfully');
         setResponse('');
         setSelectedInquiry(null);
       } else {
@@ -47,6 +51,51 @@ const AdminInquiriesPage = () => {
     } else {
       toast.error(result.message);
     }
+  };
+
+  // Export to PDF
+  const exportPDF = () => {
+    const doc = new jsPDF();
+    doc.text("Inquiries Report", 14, 15);
+
+    const tableColumn = ["User", "Status", "Message", "Response"];
+    const tableRows = inquiries.map(inq => [
+      inq.user,
+      inq.status,
+      inq.message,
+      inq.response || 'No Response',
+    ]);
+
+    autoTable(doc, {
+      startY: 20,
+      head: [tableColumn],
+      body: tableRows,
+    });
+
+    doc.save('inquiries.pdf');
+  };
+
+  // Export to CSV
+  const exportCSV = () => {
+    const csvRows = [
+      ["User", "Status", "Message", "Response"],
+      ...inquiries.map(inq => [
+        inq.user,
+        inq.status,
+        inq.message,
+        inq.response || 'No Response'
+      ])
+    ];
+
+    const csvContent = csvRows.map(e => e.join(",")).join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "inquiries.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   const style = {
@@ -106,11 +155,18 @@ const AdminInquiriesPage = () => {
     messageRow: {
       marginBottom: '20px',
     },
+    buttonContainer: {
+      position: 'fixed',
+      bottom: '10px',
+      right: '10px',
+      zIndex: 1000, 
+    }
   };
 
   return (
     <div style={style.container}>
-      <h1 style={style.heading}>Admin Inquiries</h1>
+       <BackButton />
+      <h1 style={style.heading}>Manage Inquiries</h1>
       <div>
         {inquiries.length === 0 ? (
           <p>No inquiries to display.</p>
@@ -177,6 +233,11 @@ const AdminInquiriesPage = () => {
           </form>
         </div>
       )}
+
+      <div style={style.buttonContainer}>
+        <button style={{ ...style.button, backgroundColor: '#2196F3' }} onClick={exportPDF}>Export PDF</button>
+        <button style={{ ...style.button, backgroundColor: '#FF9800' }} onClick={exportCSV}>Export CSV</button>
+      </div>
     </div>
   );
 };
