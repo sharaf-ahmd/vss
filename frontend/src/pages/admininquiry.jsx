@@ -155,18 +155,22 @@ const AdminInquiriesPage = () => {
     messageRow: {
       marginBottom: '20px',
     },
-    buttonContainer: {
-      position: 'fixed',
-      bottom: '10px',
-      right: '10px',
-      zIndex: 1000, 
-    }
+     buttonContainer: {
+  display: 'flex',
+  justifyContent: 'flex-end',
+  marginBottom: '10px',
+  gap: '10px',
+}
   };
 
   return (
     <div style={style.container}>
        <BackButton />
       <h1 style={style.heading}>Manage Inquiries</h1>
+      <div style={style.buttonContainer}>
+        <button style={{ ...style.button, backgroundColor: '#2196F3' }} onClick={exportPDF}>Export PDF</button>
+        <button style={{ ...style.button, backgroundColor: '#FF9800' }} onClick={exportCSV}>Export CSV</button>
+      </div>
       <div>
         {inquiries.length === 0 ? (
           <p>No inquiries to display.</p>
@@ -234,10 +238,7 @@ const AdminInquiriesPage = () => {
         </div>
       )}
 
-      <div style={style.buttonContainer}>
-        <button style={{ ...style.button, backgroundColor: '#2196F3' }} onClick={exportPDF}>Export PDF</button>
-        <button style={{ ...style.button, backgroundColor: '#FF9800' }} onClick={exportCSV}>Export CSV</button>
-      </div>
+      
     </div>
   );
 };

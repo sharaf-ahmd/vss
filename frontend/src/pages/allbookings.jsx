@@ -83,6 +83,12 @@ const AllBookings = () => {
     
       <BackButton />
 
+      
+      <div style={styles.buttonContainer}>
+        <button style={{ ...styles.button, backgroundColor: '#2196F3' }} onClick={exportPDF}>Export PDF</button>
+        <button style={{ ...styles.button, backgroundColor: '#FF9800' }} onClick={exportCSV}>Export CSV</button>
+      </div>
+
       <table style={styles.table}>
         <thead style={styles.thead}>
           <tr>
@@ -125,10 +131,6 @@ const AllBookings = () => {
         </tbody>
       </table>
 
-      <div style={styles.buttonContainer}>
-        <button style={{ ...styles.button, backgroundColor: '#2196F3' }} onClick={exportPDF}>Export PDF</button>
-        <button style={{ ...styles.button, backgroundColor: '#FF9800' }} onClick={exportCSV}>Export CSV</button>
-      </div>
     </div>
   );
 };
@@ -173,11 +175,11 @@ const styles = {
     cursor: 'pointer',
   },
   buttonContainer: {
-    position: 'fixed',
-    bottom: '10px',
-    right: '10px',
-    zIndex: 1000, // Ensures buttons stay on top of other elements
-  }
+  display: 'flex',
+  justifyContent: 'flex-end',
+  marginBottom: '10px',
+  gap: '10px',
+}
 };
 
 export default AllBookings;
