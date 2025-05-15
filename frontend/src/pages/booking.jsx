@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { loadStripe } from '@stripe/stripe-js';
 import { useBookingStore } from '@/store/booking';
-import BackButton from '@/components/BackButton'
-
+import BackButton from '@/components/BackButton';
 
 const stripePromise = loadStripe('pk_test_51RGhSzFNC9lumuod1YciBcs8fWrnrUvUUznVMpl4FITPAzpTFLzcdBMEeXs9QMu0t63bQwEEnHsHFo6IlR1FT8uI00lTPccNmm');
 
@@ -12,19 +11,21 @@ const Booking = () => {
   const navigate = useNavigate();
   const service = location.state?.service;
 
-    const { createBooking } = useBookingStore();
+  const { createBooking } = useBookingStore();
 
   const [bookingDetails, setBookingDetails] = useState({
     customer: '',
     contact: '',
     date: '',
-    time: '', 
+    time: '',
     location: '',
-    service: service?.name,     
-    vendor: service?.vendor,    
+    service: service?.name,
+    vendor: service?.vendor,
     price: service?.price,
-    email: localStorage.getItem("userEmail") 
+    email: localStorage.getItem("userEmail")
   });
+
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,6 +36,15 @@ const Booking = () => {
   };
 
   const handlePayment = async () => {
+    const phoneRegex = /^\d{10}$/;
+
+    if (!phoneRegex.test(bookingDetails.contact)) {
+      setErrors({ contact: 'Contact number must be exactly 10 digits.' });
+      return;
+    } else {
+      setErrors({});
+    }
+
     try {
       const response = await fetch("http://localhost:5000/api/create-checkout-session", {
         method: "POST",
@@ -43,29 +53,27 @@ const Booking = () => {
         },
         body: JSON.stringify({ bookingDetails }),
       });
-  
+
       const data = await response.json();
       if (!data.id) {
         throw new Error("Failed to create checkout session");
       }
+
       localStorage.setItem('bookingDetails', JSON.stringify(bookingDetails));
-  
+
       const stripe = await stripePromise;
       const { error } = await stripe.redirectToCheckout({ sessionId: data.id });
-  
+
       if (error) {
         console.error("Stripe checkout error:", error.message);
         alert("Error initiating payment: " + error.message);
       }
-  
+
     } catch (error) {
       console.error("Payment initiation failed:", error);
       alert("Something went wrong with your payment. Please try again.");
     }
   };
-  
-  
-
   const style = {
     container: {
       maxWidth: '480px',
@@ -107,15 +115,16 @@ const Booking = () => {
     },
   };
 
+
   return (
     <div style={style.container}>
-       <BackButton />
+      <BackButton />
       <h1 style={style.heading}>Make Booking</h1>
       <div style={style.formContainer}>
         <div style={style.inputGroup}>
           <input
             type="text"
-            value={service?.name || ''} 
+            value={service?.name || ''}
             readOnly
             style={style.inputField}
           />
@@ -124,7 +133,7 @@ const Booking = () => {
         <div style={style.inputGroup}>
           <input
             type="text"
-            value={service?.vendor || ''} 
+            value={service?.vendor || ''}
             readOnly
             style={style.inputField}
           />
@@ -164,13 +173,14 @@ const Booking = () => {
 
         <div style={style.inputGroup}>
           <input
-            type="text"
+            type="tel"
             name="contact"
             placeholder="Contact"
             value={bookingDetails.contact}
             onChange={handleChange}
             style={style.inputField}
           />
+          {errors.contact && <p style={style.errorText}>{errors.contact}</p>}
         </div>
 
         <div style={style.inputGroup}>
